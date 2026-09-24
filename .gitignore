@@ -1,0 +1,22 @@
+# Derleme çıktıları
+.build/
+build/
+*.app
+DerivedData/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+
+# Paket yöneticisi
+.swiftpm/
+Package.resolved
+
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Editör
+.vscode/
+.idea/
+*.swp
