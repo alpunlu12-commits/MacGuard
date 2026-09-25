@@ -488,15 +488,26 @@ final class GuardEngine: ObservableObject {
         guard config.url != nil else { return }
 
         let time = DateFormatter.localizedString(from: event.date, dateStyle: .none, timeStyle: .medium)
-        await NtfyClient.send(config: config,
-                              title: "MacGuard alarmı!",
-                              message: "\(event.message)\nSaat: \(time)")
+        let textResult = await NtfyClient.send(config: config,
+                                               title: "MacGuard alarmı!",
+                                               message: "\(event.message)\nSaat: \(time)")
+        var photoResult: NtfyClient.SendResult?
         if let photo {
-            await NtfyClient.sendPhoto(config: config, jpeg: photo)
+            photoResult = await NtfyClient.sendPhoto(config: config, jpeg: photo)
         }
+
         await MainActor.run {
-            self.log.log("Telefona bildirim gönderildi", detail: "ntfy · \(self.settings.pushTopic)",
-                         icon: "iphone.radiowaves.left.and.right", severity: .info)
+            // Başarısızlığı yutma: bildirim gitmediyse kullanıcı bunu bilmeli,
+            // yoksa telefonunun haber vereceğini sanarak güvenir.
+            if textResult.isSuccess, photoResult?.isSuccess ?? true {
+                self.log.log("Telefona bildirim gönderildi",
+                             detail: "ntfy · \(self.settings.pushTopic)",
+                             icon: "iphone.radiowaves.left.and.right", severity: .info)
+            } else {
+                let reason = textResult.isSuccess ? (photoResult?.message ?? "") : textResult.message
+                self.log.log("Telefona bildirim GÖNDERİLEMEDİ", detail: reason,
+                             icon: "exclamationmark.iphone", severity: .warn)
+            }
         }
     }
 

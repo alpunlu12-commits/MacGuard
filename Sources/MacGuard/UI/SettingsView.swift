@@ -7,6 +7,8 @@ struct SettingsView: View {
 
     @State private var showPinSetup = false
     @State private var pushTestResult: String?
+    /// nil = henüz sonuç yok (gönderiliyor), true/false = sonuç.
+    @State private var pushTestOK: Bool?
     @State private var launchAtLogin = LoginItem.isEnabled
     @State private var loginItemFailed = false
     @State private var passwordless = false
@@ -240,13 +242,33 @@ struct SettingsView: View {
 
             if settings.pushEnabled {
                 VStack(alignment: .leading, spacing: 8) {
-                    TextField("Sunucu", text: $settings.pushServer)
+                    TextField("Sunucu (yalnızca adres, konu adı olmadan)", text: $settings.pushServer)
                         .textFieldStyle(.roundedBorder)
                     TextField("Konu adı (örn. macguard-alp-7fj3)", text: $settings.pushTopic)
                         .textFieldStyle(.roundedBorder)
 
+                    // Gidecek adresi göster. Bu satır olmadığı için sunucu
+                    // alanına tam adres yapıştırılınca mesajlar sessizce
+                    // yanlış konuya gidiyor ve kimse fark etmiyordu.
+                    let effective = NtfyClient.Config(server: settings.pushServer,
+                                                      topic: settings.pushTopic)
+                    HStack(spacing: 6) {
+                        Image(systemName: effective.url != nil ? "arrow.right.circle.fill"
+                                                               : "exclamationmark.circle.fill")
+                        Text(effective.url?.absoluteString
+                             ?? "Adres kurulamadı — sunucu ya da konu adı hatalı")
+                            .font(.system(size: 11, design: .monospaced))
+                            .textSelection(.enabled)
+                        Spacer()
+                    }
+                    .foregroundStyle(effective.url != nil ? Theme.safe : Theme.danger)
+
+                    Text("Telefonundaki ntfy uygulamasında tam olarak bu adrese abone olmalısın.")
+                        .font(.system(size: 10.5))
+                        .foregroundStyle(Theme.textSecondary)
+
                     if !settings.pushTopic.trimmingCharacters(in: .whitespaces).isEmpty,
-                       !NtfyClient.isValidTopic(settings.pushTopic) {
+                       !NtfyClient.isValidTopic(NtfyClient.Config(server: settings.pushServer, topic: settings.pushTopic).normalizedTopic) {
                         Label("Geçersiz konu adı. Yalnızca İngiliz alfabesi harfleri, rakam, `_` ve `-` kullanılabilir — boşluk, Türkçe karakter ve `#` olmaz.",
                               systemImage: "exclamationmark.triangle.fill")
                             .font(.system(size: 11, weight: .medium))
@@ -273,26 +295,39 @@ struct SettingsView: View {
                             let config = NtfyClient.Config(server: settings.pushServer, topic: settings.pushTopic)
                             guard config.url != nil else {
                                 pushTestResult = "Konu adı geçersiz ya da sunucu adresi hatalı."
+                                pushTestOK = false
                                 return
                             }
                             pushTestResult = "Gönderiliyor…"
+                            pushTestOK = nil
                             Task {
-                                await NtfyClient.send(config: config,
-                                                      title: "MacGuard testi",
-                                                      message: "Bildirimler çalışıyor. 👍",
-                                                      priority: "default",
-                                                      tags: ["white_check_mark"])
-                                pushTestResult = "Gönderildi — telefonunu kontrol et."
+                                let result = await NtfyClient.send(
+                                    config: config,
+                                    title: "MacGuard testi",
+                                    message: "Bildirimler çalışıyor. 👍",
+                                    priority: .normal,
+                                    tags: ["white_check_mark"])
+                                pushTestResult = result.isSuccess
+                                    ? "Gönderildi — telefonunu kontrol et."
+                                    : "Gönderilemedi. \(result.message)"
+                                pushTestOK = result.isSuccess
                             }
                         }
-                        .disabled(!NtfyClient.isValidTopic(settings.pushTopic))
+                        .disabled(NtfyClient.Config(server: settings.pushServer,
+                                                    topic: settings.pushTopic).url == nil)
                     }
                     .font(.system(size: 12))
 
                     if let pushTestResult {
-                        Text(pushTestResult)
+                        let icon: String = pushTestOK == nil ? "paperplane.fill"
+                                         : (pushTestOK == true ? "checkmark.circle.fill"
+                                                               : "exclamationmark.triangle.fill")
+                        let tint: Color = pushTestOK == nil ? Theme.textSecondary
+                                        : (pushTestOK == true ? Theme.safe : Theme.danger)
+                        Label(pushTestResult, systemImage: icon)
                             .font(.system(size: 11))
-                            .foregroundStyle(Theme.safe)
+                            .foregroundStyle(tint)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                 }
             }
