@@ -273,16 +273,78 @@ telefona ek olarak gönderilir.
 
 ## Telefona bildirim (ntfy)
 
-Hesap, API anahtarı, kurulum yok.
+Alarm çaldığında telefonuna anlık bildirim ve davetsiz misafirin fotoğrafı
+gider. Hesap yok, API anahtarı yok, kayıt yok.
 
-1. Telefonuna **ntfy** uygulamasını kur (iOS / Android, ücretsiz)
-2. MacGuard > Ayarlar > Telefona bildirim → aç
-3. `Rastgele konu üret` ile bir konu adı al
-4. Telefondaki ntfy'de aynı konu adına abone ol
-5. `Test bildirimi gönder` ile dene
+### Kurulum
 
-> Konu adı bilen herkesin okuyabileceği bir adrestir. Tahmin edilemeyecek bir
-> isim kullan — üretilen rastgele ad bunun için.
+**1. Telefonuna ntfy uygulamasını kur** — ücretsiz, açık kaynak
+([iOS](https://apps.apple.com/app/ntfy/id1625396347) ·
+[Android](https://play.google.com/store/apps/details?id=io.heckel.ntfy))
+
+**2. MacGuard'da konu adını üret**
+
+Ayarlar → Telefona bildirim → *"Alarm anında telefonuma bildirim gönder"* aç →
+**Rastgele konu üret** düğmesine bas.
+
+Kendi adını da yazabilirsin ama **tahmin edilebilir bir şey seçme** — sebebini
+aşağıda anlattım. Üretilen ad 20 karakterdir.
+
+**3. Gidecek adresi kopyala**
+
+Konu alanının hemen altında yeşil renkte, uygulamanın gerçekten kullanacağı
+adres yazar:
+
+```
+→ https://ntfy.sh/macguard-xxxxxxxxxxxxxxxxxxxx
+```
+
+**Telefonda tam olarak bu adrese abone olmalısın.** Üstüne tıklayıp
+kopyalayabilirsin.
+
+**4. Telefonda abone ol**
+
+ntfy uygulamasını aç → sağ üstteki **+** → konu adını yaz (adresin son
+parçası, `https://ntfy.sh/` kısmı olmadan) → **Subscribe**.
+
+**5. Dene**
+
+MacGuard'da **Test bildirimi gönder**. Yeşil tik ve *"Gönderildi"* görürsen
+telefonuna düşmüş demektir. Kırmızı uyarı çıkarsa sebebi orada yazar.
+
+### Konu adı bir paroladır
+
+ntfy'de konular herkese açıktır ve kayıt gerektirmez. **Konu adını bilen
+herkes o konuya düşen her şeyi okuyabilir** — yani alarm anında çekilen
+fotoğrafını: yüzünü, evini, oturduğun kafeyi.
+
+`macguard`, `alarm`, `test` gibi adlar saniyeler içinde tahmin edilir.
+Uygulamanın ürettiği rastgele ad ~103 bit entropiye sahiptir; onu kullan.
+
+Bu yüzden bu depoda hiçbir yerde hazır bir konu adı yok ve uygulama boş
+gelir — herkesin kendi adını üretmesi gerekiyor.
+
+### Sunucu alanına konu adını yazma
+
+Yaygın hata: "Sunucu" alanına `https://ntfy.sh/benim-konum` gibi **tam adresi**
+yapıştırmak. O zaman konu bir kez daha eklenir ve mesaj `ntfy.sh/benim-konum/benim-konum`
+adresine gider; telefon hiçbir şey almaz.
+
+MacGuard artık bunu kendisi düzeltiyor (sunucu alanından yalnızca adresi
+ayıklıyor), ama yine de doğru kullanım şu:
+
+| Alan | Ne yazılmalı |
+|---|---|
+| Sunucu | `https://ntfy.sh` |
+| Konu adı | yalnızca konu, örn. `macguard-xxxxxxxxxxxxxxxxxxxx` |
+
+Emin olmak için yeşil satırdaki adrese bak — orada ne yazıyorsa mesaj oraya gider.
+
+### Kendi sunucunu kullanmak
+
+ntfy açık kaynak, kendi sunucunda çalıştırabilirsin. Sunucu alanına kendi
+adresini yaz (`https://ntfy.evim.net` gibi), gerisi aynı. Port da
+destekleniyor: `https://ntfy.evim.net:8080`.
 
 ---
 
