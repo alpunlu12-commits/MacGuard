@@ -41,8 +41,17 @@ Kullanıcı adı, makine adı ya da konum bilgisi gönderilmez.
   oturumuna erişmiş demektir. Uzun PIN kullan.
 - **ntfy konu adı bir paroladır.** Konuyu bilen herkes o konuya düşen fotoğrafları
   görebilir. Uygulamanın ürettiği rastgele ad 20 karakterdir (~103 bit).
-- **Kum havuzu ve notarizasyon yok.** Uygulama ad-hoc imzalıdır; kendi
-  bilgisayarında derleyip çalıştırman için tasarlandı. Başkasının derlediği bir
-  ikiliyi çalıştırmadan önce kaynağa bak.
+- **Kum havuzu ve notarizasyon yok.** Uygulama ad-hoc imzalıdır. macOS ilk
+  açılışta engeller; Gizlilik ve Güvenlik panelinden elle izin vermen gerekir.
+
+- **Hazır paket nasıl üretiliyor.** Releases sayfasındaki `MacGuard.zip`,
+  depodaki [`Scripts/build_app.sh`](Scripts/build_app.sh) ile, ilgili etiketin
+  işaret ettiği commit'ten derleniyor. Yanındaki `.sha256` dosyasıyla
+  indirdiğinin bozulmadığını doğrulayabilirsin.
+
+  Ama şunu net söyleyeyim: bu paket **benim bilgisayarımda** üretiliyor, yani
+  "aynı kaynaktan aynı ikili çıktığını" bağımsız olarak kanıtlayamazsın.
+  Bir güvenlik aracında en doğrusu kaynaktan kendin derlemek —
+  `./install.sh` bunu tek komuta indiriyor.
 - **İsteğe bağlı sudoers kuralı** yalnızca `pmset -a disablesleep 0/1` komutlarını
   kapsar. Kurmazsan MacGuard hiçbir root yetkisi kullanmaz.

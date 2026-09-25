@@ -1,5 +1,6 @@
 # MacGuard
 
+[![Derleme](https://github.com/alpunlu12-commits/MacGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/alpunlu12-commits/MacGuard/actions/workflows/ci.yml)
 [![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-green.svg)](LICENSE)
 ![Platform](https://img.shields.io/badge/platform-macOS%2014%2B-lightgrey.svg)
 ![Swift](https://img.shields.io/badge/swift-5.9-orange.svg)
@@ -32,35 +33,44 @@ macOS 14+ · Apple Silicon ve Intel · Swift + SwiftUI · **bağımlılık yok**
 
 ## Kurulum
 
-Xcode gerekmez, **Command Line Tools yeterli**:
+İki yol var. **Terminal'den korkmuyorsan ikincisi daha güvenli.**
+
+### 1. Hazır paketi indir (en kolay)
+
+[**Releases sayfasından**](https://github.com/alpunlu12-commits/MacGuard/releases/latest)
+`MacGuard.zip` indir → aç → çıkan uygulamayı **Uygulamalar** klasörüne sürükle.
+
+İlk açılışta macOS engelleyecek. Bu bir hata değil: uygulama *notarize* edilmemiş
+(Apple'a yıllık ücret ödemeyi gerektiriyor). Açmak için:
+
+> **Sistem Ayarları → Gizlilik ve Güvenlik** → sayfanın altına in →
+> *"MacGuard engellendi"* satırının yanındaki **Yine de Aç**
+
+Ya da tek komutla:
+
+```bash
+xattr -dr com.apple.quarantine /Applications/MacGuard.app
+```
+
+### 2. Kaynaktan derle (önerilen)
+
+Bir güvenlik aracını başkasının derlediği hâliyle çalıştırmak zorunda değilsin:
+
+```bash
+git clone https://github.com/alpunlu12-commits/MacGuard.git
+cd MacGuard
+./install.sh
+```
+
+Betik macOS sürümünü kontrol eder, derler, `/Applications` altına kurar ve
+uygulamayı açar. Tek gereksinim Xcode **Command Line Tools** — yoksa betik
+sana hangi komutu çalıştıracağını söyler:
 
 ```bash
 xcode-select --install
 ```
 
-Sonra:
-
-```bash
-git clone <bu-deponun-adresi>
-cd MacGuard
-./Scripts/build_app.sh --install
-```
-
-`build/MacGuard.app` üretilir ve `/Applications` altına kopyalanır.
-`--install` vermezsen yalnızca `build/` içinde kalır.
-
-İlk çalıştırma:
-
-```bash
-open /Applications/MacGuard.app
-```
-
-### macOS "açılamıyor" derse
-
-Uygulama ad-hoc imzalı, yani Apple'a para verip notarize edilmiş değil.
-**Kendi derlediğin** ikilide bu sorun çıkmaz. Başka birinden aldıysan
-Gatekeeper engeller — o durumda kaynaktan kendin derle. Tavsiyem bu:
-bir güvenlik aracını başkasının derlediği hâliyle çalıştırma.
+Xcode'un tamamına gerek yok.
 
 ---
 
