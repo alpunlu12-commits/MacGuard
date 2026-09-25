@@ -420,6 +420,17 @@ swift build -c release      # yayın derlemesi (sıfır uyarı vermeli)
 ./Scripts/build_app.sh      # .app paketi üret
 ```
 
+Sireni ses dosyasına aktarmak (video kurgusu, ses tasarımı için):
+
+```bash
+swiftc -O -o /tmp/export_siren \
+  Scripts/export_siren.swift Sources/MacGuard/Alarm/AlarmSiren.swift
+/tmp/export_siren ~/Downloads
+```
+
+Dalga formu uygulamanın çaldığıyla birebir aynı — ikisi de `SirenVoice`
+sınıfını kullanıyor, ikinci bir kopya yok.
+
 Xcode gerekmez; Command Line Tools yeterli.
 
 Katkı vermek istersen [CONTRIBUTING.md](CONTRIBUTING.md), güvenlikle ilgili bir
