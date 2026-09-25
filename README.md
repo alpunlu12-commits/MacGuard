@@ -1,6 +1,5 @@
 # MacGuard
 
-[![Derleme](https://github.com/alpunlu12-commits/MacGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/alpunlu12-commits/MacGuard/actions/workflows/ci.yml)
 [![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-green.svg)](LICENSE)
 ![Platform](https://img.shields.io/badge/platform-macOS%2014%2B-lightgrey.svg)
 ![Swift](https://img.shields.io/badge/swift-5.9-orange.svg)
