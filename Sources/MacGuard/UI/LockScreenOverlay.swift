@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import Combine
 
 /// Koruma aktifken tüm ekranları kaplayan caydırıcı bilgi ekranı.
 ///

@@ -1,5 +1,6 @@
 import SwiftUI
 import AppKit
+import Combine
 
 /// Alarm perdesi klavyeyi alabilmek için anahtar pencere olabilmeli.
 final class OverlayWindow: NSWindow {

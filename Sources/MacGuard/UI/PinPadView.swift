@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 /// Tuş takımı. Hem ekrandaki düğmelerden hem fiziksel klavyeden giriş kabul eder.
 struct PinPadView: View {
