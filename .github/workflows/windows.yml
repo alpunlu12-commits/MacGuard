@@ -1,0 +1,83 @@
+# MacGuard Windows sürümünü derler.
+#
+# Her push ve PR'da Windows/ altındaki kodun derlendiğini doğrular ve
+# x64 / ARM64 için tek dosyalık MacGuard.exe'yi artefakt olarak saklar.
+# v* etiketi itildiğinde zip'leri o sürümün Releases sayfasına ekler;
+# .github/release-notes/<etiket>.md varsa sürüm notu odur.
+name: Windows
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["v*"]
+    paths:
+      - "Windows/**"
+      - ".github/workflows/windows.yml"
+  pull_request:
+    paths:
+      - "Windows/**"
+      - ".github/workflows/windows.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        rid: [win-x64, win-arm64]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Derle (uyarılar hata sayılır)
+        run: dotnet build Windows/MacGuard.Windows.csproj -c Release -warnaserror
+
+      - name: Tek dosyalık yayın
+        run: dotnet publish Windows/MacGuard.Windows.csproj -c Release -r ${{ matrix.rid }} -o publish/${{ matrix.rid }}
+
+      - name: Paketle
+        shell: pwsh
+        run: |
+          Copy-Item LICENSE publish/${{ matrix.rid }}/LICENSE.txt
+          Compress-Archive -Path publish/${{ matrix.rid }}/* -DestinationPath MacGuard-Windows-${{ matrix.rid }}.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MacGuard-Windows-${{ matrix.rid }}
+          path: MacGuard-Windows-${{ matrix.rid }}.zip
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/release-notes
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      # .github/release-notes/<etiket>.md varsa sürüm notu olarak kullanılır.
+      - name: Sürüm notu
+        id: notes
+        shell: bash
+        run: |
+          f=".github/release-notes/${GITHUB_REF_NAME}.md"
+          if [ -f "$f" ]; then echo "path=$f" >> "$GITHUB_OUTPUT"; fi
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: MacGuard ${{ github.ref_name }}
+          body_path: ${{ steps.notes.outputs.path }}
+          files: dist/*.zip

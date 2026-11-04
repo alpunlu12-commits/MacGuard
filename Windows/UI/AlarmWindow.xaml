@@ -1,0 +1,50 @@
+<Window x:Class="MacGuard.UI.AlarmWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="clr-namespace:MacGuard.UI"
+        Title="MacGuard" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" Topmost="True"
+        Background="Black" FontFamily="{StaticResource UiFont}">
+    <Grid>
+        <Rectangle x:Name="Pulse" Opacity="0.33">
+            <Rectangle.Fill>
+                <RadialGradientBrush RadiusX="0.75" RadiusY="0.75">
+                    <GradientStop x:Name="TintStop" Color="#8CEF4444" Offset="0" />
+                    <GradientStop Color="Black" Offset="1" />
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+            <Rectangle.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.33" To="1"
+                                             Duration="0:0:0.55" AutoReverse="True" RepeatBehavior="Forever">
+                                <DoubleAnimation.EasingFunction>
+                                    <SineEase EasingMode="EaseInOut" />
+                                </DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Rectangle.Triggers>
+        </Rectangle>
+
+        <Viewbox StretchDirection="DownOnly" Margin="40">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock x:Name="BigIcon" Style="{StaticResource Icon}" FontSize="88" Foreground="White"
+                           HorizontalAlignment="Center" Margin="0,0,0,28" />
+                <TextBlock x:Name="Headline" FontFamily="{StaticResource DisplayFont}" FontSize="82" FontWeight="Black"
+                           Foreground="White" HorizontalAlignment="Center" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                    <TextBlock x:Name="ReasonIcon" Style="{StaticResource Icon}" FontSize="24" Foreground="#E6FFFFFF"
+                               Margin="0,0,10,0" />
+                    <TextBlock x:Name="ReasonText" FontSize="24" FontWeight="SemiBold" Foreground="#E6FFFFFF" />
+                </StackPanel>
+                <TextBlock x:Name="Countdown" FontSize="17" FontWeight="SemiBold" Foreground="{StaticResource Arming}"
+                           HorizontalAlignment="Center" Margin="0,10,0,0" />
+                <TextBlock x:Name="Elapsed" FontFamily="{StaticResource MonoFont}" FontSize="15" FontWeight="Medium"
+                           Foreground="#99FFFFFF" HorizontalAlignment="Center" Margin="0,10,0,0" />
+                <ui:PinPad x:Name="Pad" Width="320" Margin="0,40,0,0" />
+            </StackPanel>
+        </Viewbox>
+    </Grid>
+</Window>

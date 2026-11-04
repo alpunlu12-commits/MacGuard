@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- 19041 = Windows 10 2004. Bu hedef kameraya (MediaCapture), yüz algılamaya
+         (FaceDetector) ve Türkçe konuşmaya ek paket olmadan erişim veriyor. -->
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <UseWPF>true</UseWPF>
+    <!-- Yalnızca tepsi simgesi (NotifyIcon) ve ekran listesi için. -->
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+
+    <AssemblyName>MacGuard</AssemblyName>
+    <RootNamespace>MacGuard</RootNamespace>
+    <Product>MacGuard</Product>
+    <Company>Alp Ünlü</Company>
+    <Copyright>Copyright © 2026 Alp Ünlü. MIT Lisansı.</Copyright>
+    <Version>1.2.0</Version>
+    <InformationalVersion>1.2</InformationalVersion>
+    <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <NeutralLanguage>tr-TR</NeutralLanguage>
+    <SatelliteResourceLanguages>tr;en</SatelliteResourceLanguages>
+
+    <!-- Linux/macOS'ta da derlenebilsin (CI ve geliştirme için). -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <!-- WPF uygulaması; DPI farkındalığı app.manifest ile veriliyor. -->
+    <NoWarn>$(NoWarn);WFO0003</NoWarn>
+  </PropertyGroup>
+
+  <!-- Tek dosyalık, .NET kurulumu gerektirmeyen yayın. -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <SelfContained Condition="'$(RuntimeIdentifier)' != ''">true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Tek dış bağımlılık: ses seviyesi, sessiz kipi, belirli hoparlöre çalma
+         ve gerçek zamanlı siren akışı (WASAPI). MIT lisanslı. -->
+    <PackageReference Include="NAudio.Core" Version="2.2.1" />
+    <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\AppIcon.ico" />
+  </ItemGroup>
+
+</Project>

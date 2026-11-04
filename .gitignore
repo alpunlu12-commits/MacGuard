@@ -20,3 +20,8 @@ Package.resolved
 .vscode/
 .idea/
 *.swp
+
+# Windows sürümü (.NET)
+Windows/bin/
+Windows/obj/
+*.user
