@@ -1,7 +1,7 @@
 # MacGuard
 
 [![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-green.svg)](LICENSE)
-![Platform](https://img.shields.io/badge/platform-macOS%2014%2B%20%7C%20Windows%2010%2F11-lightgrey.svg)
+![Platform](https://img.shields.io/badge/platform-macOS%2014%2B-lightgrey.svg)
 ![Swift](https://img.shields.io/badge/swift-5.9-orange.svg)
 ![.NET](https://img.shields.io/badge/.NET-10-512bd4.svg)
 
@@ -10,10 +10,9 @@ bilgisayarına dokunan olursa siren çalar ve ancak senin PIN'inle susar.
 
 macOS 14+ · Apple Silicon ve Intel · Swift + SwiftUI · **bağımlılık yok**
 
-> 🪟 **Windows kullanıcısı mısın?** Aynı uygulamanın Windows 10/11 sürümü
-> [`Windows/`](Windows/) klasöründe. [Releases sayfasından](https://github.com/alpunlu12-commits/MacGuard/releases/latest)
-> `MacGuard-Windows-win-x64.zip` (çoğu PC) ya da `MacGuard-Windows-win-arm64.zip` (ARM)
-> indir. Kurulum ve Windows'a özgü farklar: [Windows/README.md](Windows/README.md)
+> 🪟 **Windows sürümü şimdilik askıda.** Hazır paketinde (`MacGuard.exe`) ciddi hatalar
+> çıktı; düzeltilene kadar indirmeden kaldırıldı. Kaynak kodu [`Windows/`](Windows/)
+> klasöründe duruyor: [Windows/README.md](Windows/README.md)
 
 > **English:** MacGuard is a theft-deterrent alarm for MacBooks left unattended
 > in cafés. Arm it and a siren goes off if the machine is moved, the lid is
@@ -21,7 +20,8 @@ macOS 14+ · Apple Silicon ve Intel · Swift + SwiftUI · **bağımlılık yok**
 > too close to the camera. Only your PIN silences it. It also grabs a photo from
 > the webcam and can push a notification to your phone. Native Swift + SwiftUI,
 > zero dependencies, MIT licensed. Interface and docs are in Turkish.
-> A Windows 10/11 port (C# + WPF, .NET 10) lives in [`Windows/`](Windows/).
+> A Windows 10/11 port (C# + WPF, .NET 10) lives in [`Windows/`](Windows/); its prebuilt
+> download is paused until its bugs are fixed.
 
 ---
 
@@ -481,7 +481,7 @@ MacGuard/
     └── UI/                  Panel, ayarlar, tuş takımı, perdeler
 
 Windows/                     Windows 10/11 sürümü (C# + WPF) — ayrıntı: Windows/README.md
-.github/workflows/windows.yml  Windows sürümünü derler, etiketlerde Releases'e ekler
+.github/workflows/windows.yml  Windows sürümünün derlendiğini doğrular (Releases'e ekleme şimdilik kapalı)
 ```
 
 ## Geliştirme

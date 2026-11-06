@@ -9,17 +9,20 @@ macOS sürümüyle aynı davranış, aynı Türkçe arayüz, aynı eşikler. Har
 sakinleşmesi, PIN saklama ve siren sesi birebir aynı algoritmayla çalışır. Platform
 farklarını aşağıda tek tek yazdım.
 
-> **Durum:** ilk Windows sürümü. Derlemesi her push'ta GitHub Actions'ta doğrulanıyor.
+> ⚠️ **Durum: askıda.** Hazır paket (`MacGuard.exe`) ciddi hatalar çıkardı ve 6 Kasım 2026'da
+> Releases'ten kaldırıldı. Düzeltilene kadar indirilebilir bir Windows sürümü yok; indirdiysen
+> şimdilik kullanma. Kod burada duruyor, derlemesi her push'ta GitHub Actions'ta doğrulanıyor.
 > Bir sorun görürsen [issue aç](https://github.com/alpunlu12-commits/MacGuard/issues).
 
 ---
 
 ## Kurulum
 
-### 1. Hazır paketi indir (en kolay)
+### 1. Hazır paketi indir — şimdilik yok
 
-[**Releases sayfasından**](https://github.com/alpunlu12-commits/MacGuard/releases/latest)
-bilgisayarına uygun zip'i indir:
+Hazır paket askıya alındı (yukarıdaki Durum notu). Düzelince yeni bir sürümle
+[Releases sayfasına](https://github.com/alpunlu12-commits/MacGuard/releases/latest) dönecek;
+o zaman bilgisayarına uygun zip'i indireceksin:
 
 | Dosya | Hangi bilgisayar |
 |---|---|
